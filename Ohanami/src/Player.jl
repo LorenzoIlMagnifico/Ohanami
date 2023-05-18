@@ -1,5 +1,5 @@
 include("Card.jl")
-using Printf
+include("Action.jl")
 """
 player
 
@@ -34,8 +34,24 @@ function player()
 end
 
 """
-"""
 function get_possible_actions()
+    Returns all possible actions in terms of a list of tuples with the first element being the id of the card in hand, second being the stack concerning the move
+"""
+function get_possible_actions(p::player)
+    list_of_moves = Vector{ohanami_action}()
+    for (i,playing_card) in enumerate(p.cards_in_hand)
+        num = playing_card.num
+        for (j,stack) in enumerate(p.played_cards)
+            if length(stack)>1
+                if num<stack[1].num || num>stack[end].num
+                    push!(list_of_moves,ohanami_action(i,j))
+                end
+            else
+                push!(list_of_moves,ohanami_action(i,j))
+            end
+        end
+    end
+    return list_of_moves
 end
 
 """
