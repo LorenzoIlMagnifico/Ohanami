@@ -1,6 +1,6 @@
 module Ohanami
-export greet
+export game, player, card
 
-greet() = print("Hello World!")
+include("Game.jl")
 
 end # module Ohanami

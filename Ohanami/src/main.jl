@@ -1,3 +1,10 @@
 include("Ohanami.jl")
 using .Ohanami
-greet()
+include("Settings.jl")
+function do_main()
+    g = game(2)
+    println(g.deck)
+    #println(card("3"))
+    #println(player("3"))
+end
+do_main()
