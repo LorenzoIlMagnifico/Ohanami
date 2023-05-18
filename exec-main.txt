@@ -1,0 +1,1 @@
+julia --project ./Ohanami/src/main.jl

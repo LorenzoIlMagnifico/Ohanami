@@ -34,7 +34,8 @@ function card_to_vector_mapping()
     Creates a mapping from num to vector
 """
 function card_to_vector_mapping()
-    f = open("./colors.csv", "r")
+    #for debugging "./Ohanami/colors.csv"
+    f = open("./Ohanami/colors.csv", "r")
     num_to_col = Dict{Int, String}()
     colors = ["grey","pink","green","blue"]
     for i in 1:121
