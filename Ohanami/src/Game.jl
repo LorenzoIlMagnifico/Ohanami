@@ -48,9 +48,10 @@ function play_round(g::game)
     #every player draws 10 cards
     draw_new_hand(g)
     for play in g.players
-        println("Cards in hand:\n")
-        println(play.cards_in_hand)
-        println(get_possible_actions(play))
+        #println("Cards in hand:\n")
+        #println(play.cards_in_hand)
+        #println(get_possible_actions(play))
+        Agent.choose_action(play)
     end
     #for 5 rounds 
     #choose 2 cards in hand 

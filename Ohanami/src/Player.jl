@@ -1,5 +1,6 @@
 include("Card.jl")
-include("Action.jl")
+include("Agent.jl")
+using .Agent
 """
 player
 
@@ -19,6 +20,7 @@ mutable struct player
     points::Int
     played_cards::Vector{Vector{card}}
     cards_in_hand::Vector{card}
+    player_agent::agent
 end
 
 """
@@ -30,7 +32,7 @@ function player()
     push!(played_cards_vec, Vector{card}())
     push!(played_cards_vec, Vector{card}())
     push!(played_cards_vec, Vector{card}())
-    return player(0,0,0,0,0,played_cards_vec,Vector{card}())
+    return player(0,0,0,0,0,played_cards_vec,Vector{card}(),agent("random"))
 end
 
 """
@@ -55,10 +57,13 @@ function get_possible_actions(p::player)
 end
 
 """
+function choose_action(pl::player)
+    chooses the action according to the current game state of a player
 """
-function random_play()
-
+function Agent.choose_action(p::player)
+    choose_action(p.player_agent, get_possible_actions(p))
 end
+
 
 
 """
