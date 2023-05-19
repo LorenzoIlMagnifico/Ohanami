@@ -17,6 +17,7 @@ struct game
     players::Vector{player}
     deck::Vector{card}
     round_num::Vector{Int}
+    settings::Dict{String,Any}
 end
 """
 function game(num_player::Int)
@@ -27,8 +28,13 @@ function game(num_player::Int)
     for i in 1:num_player
         push!(player_vec,player())
     end
-    g = game(num_player, player_vec, deck(),[1])
+    g = game(num_player, player_vec, deck(),[1],Dict{String,Any}())
     shuffle_deck!(g)
+    return g
+end
+function game(num_player::Int, settings::Dict{String,Any})
+    g = game(num_player)
+    g = game(g.number_of_players, g.players, g.deck,g.round_num,settings)
     return g
 end
 """
@@ -86,9 +92,9 @@ function play_round(g::game)
             execute_action(action, play)
             action = Agent.choose_action(play)
             execute_action(action, play)
-            #hand cards to next player
-            hand_cards_around(g)
+            #hand cards to next player  
         end
+        hand_cards_around(g)
     end
     #rate the round
     evaluate_round(g)

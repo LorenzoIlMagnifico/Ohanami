@@ -46,14 +46,14 @@ function get_possible_actions(p::player)
     list_of_moves = Vector{ohanami_action}()
     for (i,playing_card) in enumerate(p.cards_in_hand)
         num = playing_card.num
-        push!(list_of_moves, ohanami_action(i,0))
+        push!(list_of_moves, ohanami_action(i,0,playing_card))
         for (j,stack) in enumerate(p.played_cards)
             if length(stack)>1
                 if num<stack[1].num || num>stack[end].num
-                    push!(list_of_moves,ohanami_action(i,j))
+                    push!(list_of_moves,ohanami_action(i,j,playing_card))
                 end
             else
-                push!(list_of_moves,ohanami_action(i,j))
+                push!(list_of_moves,ohanami_action(i,j,playing_card))
             end
         end
     end
