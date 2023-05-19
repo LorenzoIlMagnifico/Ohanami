@@ -32,9 +32,13 @@ function game(num_player::Int)
     shuffle_deck!(g)
     return g
 end
-function game(num_player::Int, settings::Dict{String,Any})
-    g = game(num_player)
-    g = game(g.number_of_players, g.players, g.deck,g.round_num,settings)
+function game(settings::Dict{String,Any})
+    player_vec = Vector{player}()
+    for i in 1:settings["num_players"]
+        push!(player_vec,player(settings["players"][i]))
+    end
+    g = game(settings["num_players"],player_vec,deck(),[1],settings)
+    shuffle_deck!(g)
     return g
 end
 """

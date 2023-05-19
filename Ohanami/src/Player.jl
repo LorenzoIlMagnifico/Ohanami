@@ -1,4 +1,4 @@
-include("Card.jl")
+
 include("Agent.jl")
 using .Agent
 """
@@ -36,6 +36,22 @@ function player()
     num_cards["grey"] = 0
     num_cards["pink"] = 0
     return player(num_cards,0,played_cards_vec,Vector{card}(),Vector{card}(),agent("random"))
+end
+"""
+function player()
+    Creates a player struct
+"""
+function player(strategy::String)
+    played_cards_vec = Vector{Vector{card}}()
+    push!(played_cards_vec, Vector{card}())
+    push!(played_cards_vec, Vector{card}())
+    push!(played_cards_vec, Vector{card}())
+    num_cards = Dict{String,Int}()
+    num_cards["blue"] = 0
+    num_cards["green"] = 0
+    num_cards["grey"] = 0
+    num_cards["pink"] = 0
+    return player(num_cards,0,played_cards_vec,Vector{card}(),Vector{card}(),agent(strategy))
 end
 
 """
@@ -112,6 +128,7 @@ function Base.show(io::IO, play::player)
     Custom function used for displaying the information of a player
 """
 function Base.show(io::IO, play::player)
+    @printf(io,"Player uses agent %s\n",play.player_agent.agent_type)
     @printf(io, "Player has played:\n")
     @printf(io, "Blue: %d\n",play.num_cards["blue"])
     @printf(io, "Green: %d\n",play.num_cards["green"])
