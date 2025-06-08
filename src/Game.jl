@@ -1,6 +1,6 @@
 
 
-include("Player.jl")
+
 
 export game, play_game!
 
@@ -31,6 +31,11 @@ function game(num_player::Int)
         push!(player_vec,player())
     end
     g = game(num_player, player_vec, deck(),[1],Dict{String,Any}())
+    shuffle_deck!(g)
+    return g
+end
+function game(player_vec::Vector{player})
+    g = game(length(player_vec), player_vec, deck(),[1],Dict{String,Any}())
     shuffle_deck!(g)
     return g
 end
@@ -94,9 +99,9 @@ function play_round!(g::game)
         #for 5 rounds 
         for play in g.players
             #choose 2 cards in hand and play them
-            action = Agent.choose_action(play)
+            action = choose_action(play, g)
             execute_action(action, play)
-            action = Agent.choose_action(play)
+            action = choose_action(play, g)
             execute_action(action, play)
             #hand cards to next player  
         end
@@ -125,4 +130,19 @@ function draw_new_hand(g::game)
         end
         player.cards_in_hand = new_hand
     end
+end
+
+function construct_args(p::player, g::game)
+    return Dict{String,Any}("player" => p, "game" => g)
+end
+
+"""
+function choose_action(pl::player)
+    chooses the action according to the current game state of a player
+"""
+function choose_action(p::player, g::game)
+    actions = get_possible_actions(p)
+    stack = p.played_cards
+    hand = p.cards_in_hand
+    return AGENT_DICT[p.player_agent](actions, stack, hand, args = construct_args(p, g))
 end

@@ -1,4 +1,7 @@
-include("Card.jl")
+
+
+export action, ohanami_action
+
 abstract type action end
 struct ohanami_action <: action
     card_id::Int

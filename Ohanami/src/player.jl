@@ -1,6 +1,6 @@
 
-
-export player, get_possible_actions, execute_action
+include("Agent.jl")
+using .Agent
 """
 player
 
@@ -18,7 +18,7 @@ mutable struct player
     played_cards::Vector{Vector{card}}
     cards_in_hand::Vector{card}
     removed_cards::Vector{card}
-    player_agent::String
+    player_agent::agent
 end
 
 """
@@ -35,7 +35,7 @@ function player()
     num_cards["green"] = 0
     num_cards["grey"] = 0
     num_cards["pink"] = 0
-    return player(num_cards,0,played_cards_vec,Vector{card}(),Vector{card}(),"random")
+    return player(num_cards,0,played_cards_vec,Vector{card}(),Vector{card}(),agent("random"))
 end
 """
 function player()
@@ -51,7 +51,7 @@ function player(strategy::String)
     num_cards["green"] = 0
     num_cards["grey"] = 0
     num_cards["pink"] = 0
-    return player(num_cards,0,played_cards_vec,Vector{card}(),Vector{card}(),"$strategy")
+    return player(num_cards,0,played_cards_vec,Vector{card}(),Vector{card}(),agent(strategy))
 end
 
 """
@@ -113,7 +113,13 @@ function execute_action(a::ohanami_action, p::player)
 end
 
 
-
+"""
+function choose_action(pl::player)
+    chooses the action according to the current game state of a player
+"""
+function Agent.choose_action(p::player)
+    choose_action(p.player_agent, p.played_cards, p.cards_in_hand, get_possible_actions(p))
+end
 
 
 
@@ -124,19 +130,19 @@ function Base.show(io::IO, play::player)
 function Base.show(io::IO, play::player)
     println(io,"\n")
     println(io,"----------------------\n")
-    println(io,"Player uses agent $(play.player_agent)")
+    println(io,"Player uses agent %s\n",play.player_agent.agent_type)
     println(io, "Player has played:\n")
-    println(io, "Blue: $(play.num_cards["blue"])")
-    println(io, "Green: $(play.num_cards["green"])")
-    println(io, "Grey: $(play.num_cards["grey"])")
-    println(io, "Pink: $(play.num_cards["pink"])")
+    println(io, "Blue: %d\n",play.num_cards["blue"])
+    println(io, "Green: %d\n",play.num_cards["green"])
+    println(io, "Grey: %d\n",play.num_cards["grey"])
+    println(io, "Pink: %d\n",play.num_cards["pink"])
     println(io, "and has points:\n")
-    println(io, "Points: $(play.points)")
+    println(io, "Points: %d\n",play.points)
     println(io, "with stacks:\n")
     for stack in play.played_cards
         if length(stack)>0
-            println(io, "low: $(stack[1].num)")
-            println(io, "high: $(stack[end].num)")
+            println(io, "low: %d",stack[1].num)
+            println(io, "high: %d\n",stack[end].num)
         else
             println(io, "none\n")
         end
