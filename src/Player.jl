@@ -118,7 +118,7 @@ function choose_action(pl::player)
     chooses the action according to the current game state of a player
 """
 function Agent.choose_action(p::player)
-    choose_action(p.player_agent, get_possible_actions(p))
+    choose_action(p.player_agent, p.played_cards, p.cards_in_hand, get_possible_actions(p))
 end
 
 
@@ -128,6 +128,8 @@ function Base.show(io::IO, play::player)
     Custom function used for displaying the information of a player
 """
 function Base.show(io::IO, play::player)
+    @printf(io,"\n")
+    @printf(io,"----------------------\n")
     @printf(io,"Player uses agent %s\n",play.player_agent.agent_type)
     @printf(io, "Player has played:\n")
     @printf(io, "Blue: %d\n",play.num_cards["blue"])
@@ -145,5 +147,5 @@ function Base.show(io::IO, play::player)
             @printf(io, "none\n")
         end
     end
-    
+    @printf(io,"----------------------\n")
 end

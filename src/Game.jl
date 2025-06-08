@@ -2,6 +2,8 @@
 
 include("Player.jl")
 
+export game, play_game!
+
 """
 game
 
@@ -83,9 +85,9 @@ function hand_cards_around(g::game)
 end
 """
 function play_round(g::game)
-    Overall logic to play a round
+    plays a round of the game g meaning 10 cards are dealt and each player choses 2 cards for 5 turns until round is over
 """
-function play_round(g::game)
+function play_round!(g::game)
     #every player draws 10 cards
     draw_new_hand(g)
     for i in 1:5
@@ -105,6 +107,11 @@ function play_round(g::game)
     g.round_num[1] += 1
 end
 
+function play_game!(g::game)
+    play_round!(g)
+    play_round!(g)
+    play_round!(g)
+end
 
 """
 function draw_new_hand(g)

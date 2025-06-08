@@ -16,14 +16,14 @@ end
 function random_action(actions::Vector{action})
     Returns a random action
 """
-function random_action(actions::Vector{<:action})
+function random_action(actions::Vector{<:action}, stack::Vector{Vector{card}}, hand::Vector{card})
     return rand(actions)
 end
 """
 function random_pink(actions::Vector{action})
     Returns a random action
 """
-function random_pink(actions::Vector{<:action})
+function random_pink(actions::Vector{<:action}, stack::Vector{Vector{card}}, hand::Vector{card})
     pink_actions = Vector{ohanami_action}()
     for act in actions
         playing_card = act.card
@@ -37,10 +37,18 @@ function random_pink(actions::Vector{<:action})
     return rand(actions)
 end
 
-AGENT_DICT = Dict("random"=>random_action, "random_pink"=> random_pink)
+"""
+function greedy_action(actions::Vector{action})
+    Returns a greedy action with the lowest distance to a number on the stack
+"""
+function greedy_action(actions::Vector{<:action}, stack::Vector{Vector{card}}, hand::Vector{card})
+    
+end
 
-function choose_action(ag::agent, actions::Vector{<:action})
-    return AGENT_DICT[ag.agent_type](actions)
+AGENT_DICT = Dict("random"=>random_action, "random_pink"=> random_pink, "greedy"=> greedy_action)
+
+function choose_action(ag::agent, stack::Vector{Vector{card}}, hand::Vector{card}, actions::Vector{<:action})
+    return AGENT_DICT[ag.agent_type](actions, stack, hand)
 end
 
 end #module
